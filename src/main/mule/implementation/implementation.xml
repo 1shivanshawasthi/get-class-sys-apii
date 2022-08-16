@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="5af187df-3937-4689-9b37-817da1fc54e7" />
+	<sub-flow name="get-class" doc:id="069b0812-6e4a-44c8-a917-31658c2307d6" >
+		<logger level="INFO" doc:name="Start flow for get-Class" doc:id="9e3ce444-7b69-4d48-9914-b20b59910cbe" message="Start flow for get-Class"/>
+		<ee:transform doc:name="Payload" doc:id="722338c1-feab-4cc9-be85-5d5c93fab581">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  Name: "Shivansh Awasthi",
+  Hobby: "Playing",
+  Class: "Tenth"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End flow for get-Class" doc:id="1329c6ed-5b59-4cab-9db2-ff622617df9f" message="End flow for get-Class"/>
+	</sub-flow>
+	<sub-flow name="get-hobby" doc:id="80c04eaa-afa7-41cc-baec-aceaecca94f8" >
+		<logger level="INFO" doc:name="Start flow for get-Hobby" doc:id="8b70970a-d446-41f5-837a-0e4d3a5b19a5" message="Start flow for get-Hobby"/>
+		<ee:transform doc:name="Payload" doc:id="621a39ee-6be2-4dcc-9ac8-f6ce9a744d93">
+			<ee:variables>
+				<ee:set-variable variableName="hobby"><![CDATA[attributes.uriParams.'hobby']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<file:read doc:name="Read" doc:id="91e6f1ba-7819-4edc-bd69-6ac7474e5e41" config-ref="File_Config" path="C:\Users\SHIV\Downloads\myFile0.csv"/>
+		<ee:transform doc:name="Payload" doc:id="115ebc21-4a19-405e-aa97-e8a38446f651">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End flow for get-Hobby" doc:id="100b2cf5-228d-4243-9554-0e66bdd1eaaf" message="End flow for get-Hobby"/>
+	</sub-flow>
+	<sub-flow name="post-class" doc:id="fbdd24b9-1df0-4931-b237-976948e027eb" >
+		<logger level="INFO" doc:name="Start flow for post-Class" doc:id="ef5ea708-c96e-43a2-8876-2423379dcce8" message="Start flow for post-Class"/>
+		<file:read doc:name="Read Csv File" doc:id="baa6006b-3f65-409e-81c1-e41e345f30b9" config-ref="File_Config" path="C:\Users\SHIV\Downloads\myFile0.csv"/>
+		<ee:transform doc:name="Payload Of Class Data" doc:id="7d6e8c11-e6c2-4531-ba3c-3a5aded3420c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End flow for post-Class" doc:id="4b99f6ce-efbe-4297-bf50-83818581a6a2" message="End flow for post-Class"/>
+	</sub-flow>
+</mule>
